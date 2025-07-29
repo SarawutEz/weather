@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>โปรแกรมพยากรณ์อากาศ</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-blue-50 min-h-screen flex items-center justify-center p-6">
+    <div class="bg-black rounded-xl shadow-lg max-w-md w-full p-8">
+        <h1 class="text-2xl font-semibold text-center mb-6 text-blue-500">โปรแกรมพยากรณ์อากาศ</h1>
+
+        {% if error %}
+        <div class="bg-red-100 text-red-700 p-3 rounded mb-4 text-center font-medium">
+            {{ error }}
+        </div>
+        {% endif %}
+
+        <form method="POST" class="flex gap-3 mb-6">
+            <input type="text" name="city" placeholder="กรอกชื่อเมือง (อังกฤษ)" required
+                class="flex-grow border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400" />
+            <button type="submit" class="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 transition">
+                ค้นหา
+            </button>
+        </form>
+
+        {% if weather %}
+        <div class="space-y-3 text-white">
+            <p class="text-lg font-semibold">📍 เมือง: <span class="font-normal">{{ weather.location }}</span></p>
+            <p>🌤️ สภาพอากาศ: <span class="font-medium">{{ weather.condition }}</span></p>
+            <p>🌡️ อุณหภูมิ: <span class="font-medium">{{ weather.temp_c }} °C</span></p>
+            <p>💧 ความชื้น: <span class="font-medium">{{ weather.humidity }}%</span></p>
+            <p>🍃 ความเร็วลม: <span class="font-medium">{{ weather.wind_kph }} kph</span></p>
+            <p>
+                🌫️ ค่าฝุ่น PM2.5:
+                {% if weather.pm25 %}
+                <span class="font-medium">{{ weather.pm25 | round(2) }} µg/m³</span>
+                {% else %}
+                <span class="italic text-gray-500">ไม่มีข้อมูล</span>
+                {% endif %}
+            </p>
+            <p>📊 AQI: <span class="font-medium">{{ weather.aqi_desc }}</span></p>
+        </div>
+        {% endif %}
+    </div>
+</body>
+
+</html>
