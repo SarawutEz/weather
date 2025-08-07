@@ -1,0 +1,19 @@
+.bar-bg {
+    background: linear-gradient(90deg, #2563eb 0%, #1e293b 100%);
+}
+
+.bar-temp {
+    background: linear-gradient(90deg, #f87171 0%, #fbbf24 100%);
+}
+
+.bar-humidity {
+    background: linear-gradient(90deg, #38bdf8 0%, #6366f1 100%);
+}
+
+.bar-wind {
+    background: linear-gradient(90deg, #a3e635 0%, #22d3ee 100%);
+}
+
+.bar-pm {
+    background: linear-gradient(90deg, #f472b6 0%, #64748b 100%);
+}

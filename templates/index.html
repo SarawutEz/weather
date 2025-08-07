@@ -5,31 +5,72 @@
     <meta charset="UTF-8" />
     <title>สภาพอากาศ</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
     <style>
-        .bar-bg { background: linear-gradient(90deg, #2563eb 0%, #1e293b 100%); }
-        .bar-temp { background: linear-gradient(90deg, #f87171 0%, #fbbf24 100%); }
-        .bar-humidity { background: linear-gradient(90deg, #38bdf8 0%, #6366f1 100%); }
-        .bar-wind { background: linear-gradient(90deg, #a3e635 0%, #22d3ee 100%); }
-        .bar-pm { background: linear-gradient(90deg, #f472b6 0%, #64748b 100%); }
+        .bar-bg {
+            background: linear-gradient(90deg, #2563eb 0%, #1e293b 100%);
+        }
+
+        .bar-temp {
+            background: linear-gradient(90deg, #f87171 0%, #fbbf24 100%);
+        }
+
+        .bar-humidity {
+            background: linear-gradient(90deg, #38bdf8 0%, #6366f1 100%);
+        }
+
+        .bar-wind {
+            background: linear-gradient(90deg, #a3e635 0%, #22d3ee 100%);
+        }
+
+        .bar-pm {
+            background: linear-gradient(90deg, #f472b6 0%, #64748b 100%);
+        }
+
+        /* Scrollbar for Chrome/Edge */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #1e293b;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #2563eb;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #1e40af;
+        }
     </style>
 </head>
 
-<body class="min-h-screen w-full bg-gradient-to-br from-gray-900 via-blue-900 to-gray-800 flex items-center justify-center p-0">
+<body
+    class="min-h-screen w-full bg-gradient-to-br from-gray-900 via-blue-900 to-gray-800 flex items-center justify-center p-0 text-blue-100">
+
     <div class="fixed inset-0 z-0 pointer-events-none">
         <div class="absolute inset-0 bg-gradient-to-br from-blue-900 via-gray-900 to-gray-800 opacity-90"></div>
         <div class="absolute top-0 left-0 w-96 h-96 bg-blue-700 rounded-full blur-3xl opacity-30"></div>
         <div class="absolute bottom-0 right-0 w-96 h-96 bg-purple-800 rounded-full blur-3xl opacity-20"></div>
     </div>
+
     <div class="relative z-10 w-full min-h-screen flex flex-col items-center justify-center">
-        <div class="bg-gray-900/80 backdrop-blur-lg rounded-3xl shadow-2xl w-full max-w-2xl mx-auto p-4 md:p-10 border border-blue-800">
+        <div
+            class="bg-gray-900/90 backdrop-blur-lg rounded-3xl shadow-2xl w-full max-w-2xl mx-auto p-6 md:p-10 border border-blue-800">
+
             <div class="flex items-center justify-center mb-8">
                 <i class="fa-solid fa-cloud-moon text-4xl md:text-5xl text-blue-400 drop-shadow-lg"></i>
             </div>
-            <h1 class="text-2xl md:text-4xl font-bold text-center mb-8 text-blue-300 tracking-wide drop-shadow">สภาพอากาศวันนี้</h1>
+
+            <h1
+                class="text-2xl md:text-4xl font-bold text-center mb-8 text-blue-300 tracking-wide drop-shadow">
+                สภาพอากาศวันนี้</h1>
 
             {% if error %}
-            <div class="bg-red-900/80 text-red-300 p-3 rounded mb-6 text-center font-medium shadow">
+            <div
+                class="bg-red-900/80 text-red-300 p-3 rounded mb-6 text-center font-medium shadow">
                 {{ error }}
             </div>
             {% endif %}
@@ -37,154 +78,198 @@
             <form method="POST" class="flex flex-col md:flex-row gap-3 mb-8 w-full" autocomplete="off">
                 <div class="relative w-full">
                     <input type="text" name="city" id="city-input" placeholder="กรอกชื่อเมือง (อังกฤษ)" required
-                        class="flex-grow border border-blue-700 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-800/80 text-blue-100 shadow placeholder:text-blue-300 w-full" />
-                    <ul id="suggestions" class="absolute left-0 right-0 mt-1 bg-gray-900 border border-blue-700 rounded-lg shadow-lg z-10 hidden"></ul>
+                        class="flex-grow border border-blue-700 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-800 text-blue-200 placeholder-blue-400 shadow w-full" />
+                    <ul id="suggestions"
+                        class="absolute left-0 right-0 mt-1 bg-gray-900 border border-blue-700 rounded-lg shadow-lg z-10 hidden max-h-60 overflow-y-auto">
+                    </ul>
                 </div>
-                <button type="submit" class="bg-gradient-to-r from-blue-700 to-blue-500 text-white px-6 py-2 rounded-lg hover:from-blue-800 hover:to-blue-600 transition font-semibold shadow-lg">
+                <button type="submit"
+                    class="bg-gradient-to-r from-blue-700 to-blue-500 text-white px-6 py-2 rounded-lg hover:from-blue-800 hover:to-blue-600 transition font-semibold shadow-lg">
                     <i class="fa-solid fa-magnifying-glass mr-2"></i>ค้นหา
                 </button>
             </form>
 
             {% if weather %}
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-blue-100 w-full">
-                <div class="bg-gray-800/80 rounded-xl p-4 flex flex-col items-center justify-center gap-4 shadow w-full text-center">
-                    <i class="fa-solid fa-location-dot text-blue-400 text-xl md:text-2xl"></i>
-                    <span class="text-lg md:text-xl">เมือง: <span class="font-normal text-yellow-200">{{ weather.location }}</span></span>
-                </div>
-                <div class="bg-gray-800/80 rounded-xl p-4 flex flex-col items-center justify-center gap-4 shadow w-full text-center">
-                    <i class="fa-solid fa-clock text-blue-300 text-xl md:text-2xl"></i>
-                    <span class="text-base md:text-lg">เวลาปัจจุบัน: <span class="font-normal text-blue-200">{{ weather.localtime }}</span></span>
-                </div>
-                <div class="bg-gray-800/80 rounded-xl p-4 flex flex-col items-center justify-center gap-4 shadow w-full text-center">
-                    <img src="{{ weather.icon }}" alt="weather icon" class="w-8 h-8 md:w-10 md:h-10">
-                    <span class="text-base md:text-lg">สภาพอากาศ: <span class="font-medium text-yellow-200">{{ weather.condition }}</span></span>
-                </div>
-                <!-- Temperature Bar -->
-                <div class="bg-gray-800/80 rounded-xl p-4 shadow w-full flex flex-col items-center justify-center gap-2 text-center">
-                    <div class="flex items-center justify-center gap-3 mb-2">
-                        <i class="fa-solid fa-temperature-half text-red-400 text-xl md:text-2xl"></i>
-                        <span class="text-base md:text-lg">อุณหภูมิ: <span class="font-medium text-red-200">{{ weather.temp_c }} °C</span></span>
-                    </div>
-                    <div class="w-full h-3 md:h-4 rounded-full bar-bg">
-                        <div class="h-3 md:h-4 rounded-full bar-temp" style="width: {{ weather.temp_c|float * 2 }}%;"></div>
-                    </div>
-                </div>
-                <!-- Humidity Bar -->
-                <div class="bg-gray-800/80 rounded-xl p-4 shadow w-full flex flex-col items-center justify-center gap-2 text-center">
-                    <div class="flex items-center justify-center gap-3 mb-2">
-                        <i class="fa-solid fa-droplet text-blue-400 text-xl md:text-2xl"></i>
-                        <span class="text-base md:text-lg">ความชื้น: <span class="font-medium text-blue-200">{{ weather.humidity }}%</span></span>
-                    </div>
-                    <div class="w-full h-3 md:h-4 rounded-full bar-bg">
-                        <div class="h-3 md:h-4 rounded-full bar-humidity" style="width: {{ weather.humidity|float }}%;"></div>
-                    </div>
-                </div>
-                <!-- Wind Bar -->
-                <div class="bg-gray-800/80 rounded-xl p-4 shadow w-full flex flex-col items-center justify-center gap-2 text-center">
-                    <div class="flex items-center justify-center gap-3 mb-2">
-                        <i class="fa-solid fa-wind text-gray-400 text-xl md:text-2xl"></i>
-                        <span class="text-base md:text-lg">ความเร็วลม: <span class="font-medium text-gray-200">{{ weather.wind_kph }} kph</span></span>
-                    </div>
-                    <div class="w-full h-3 md:h-4 rounded-full bar-bg">
-                        <div class="h-3 md:h-4 rounded-full bar-wind" style="width: {{ weather.wind_kph|float if weather.wind_kph else 0 }}%;"></div>
-                    </div>
-                </div>
-                <!-- PM2.5 Bar -->
-                <div class="bg-gray-800/80 rounded-xl p-4 shadow w-full flex flex-col items-center justify-center gap-2 text-center">
-                    <div class="flex items-center justify-center gap-3 mb-2">
-                        <i class="fa-solid fa-smog text-gray-500 text-xl md:text-2xl"></i>
-                        <span class="text-base md:text-lg">ค่าฝุ่น PM2.5:
-                            {% if weather.pm25 %}
-                            <span class="font-medium text-pink-200">{{ weather.pm25 | round(2) }} µg/m³</span>
-                            {% else %}
-                            <span class="italic text-gray-400">ไม่มีข้อมูล</span>
-                            {% endif %}
-                        </span>
-                    </div>
-                    {% if weather.pm25 %}
-                    <div class="w-full h-3 md:h-4 rounded-full bar-bg">
-                        <div class="h-3 md:h-4 rounded-full bar-pm" style="width: {{ (weather.pm25|float / 500 * 100) if weather.pm25 else 0 }}%;"></div>
-                    </div>
-                    {% endif %}
-                </div>
-                <div class="bg-gray-800/80 rounded-xl p-4 flex flex-col items-center justify-center gap-4 shadow w-full sm:col-span-2 text-center">
-                    <i class="fa-solid fa-chart-bar text-green-400 text-xl md:text-2xl"></i>
-                    <span class="text-base md:text-lg">AQI: <span class="font-medium text-green-200">{{ weather.aqi_desc }}</span></span>
-                </div>
-            </div>
-            {% endif %}
+            <div x-data="{ day: 'today' }" class="grid grid-cols-1 gap-4 text-blue-100 w-full">
 
-            {% if forecast %}
-            <div x-data="{ open: false }" class="w-full col-span-2 mt-6">
-                <button @click="open = !open"
-                    class="w-full bg-gradient-to-r from-blue-700 to-blue-500 text-white px-6 py-3 rounded-xl font-bold shadow-lg hover:from-blue-800 hover:to-blue-600 transition flex items-center justify-center gap-2 text-lg mb-2">
-                    <i class="fa-solid fa-calendar-day"></i>
-                    <span>ดูพยากรณ์วันพรุ่งนี้</span>
-                    <i :class="open ? 'fa-solid fa-chevron-up' : 'fa-solid fa-chevron-down'" class="ml-2"></i>
-                </button>
-                <div x-show="open" x-transition class="bg-blue-900/80 rounded-xl p-6 shadow flex flex-col items-center mt-2 w-full text-center">
-                    <h2 class="text-lg md:text-xl font-bold text-blue-200 mb-2">
-                        <i class="fa-solid fa-calendar-day mr-2"></i>พยากรณ์วันพรุ่งนี้ ({{ forecast.date }})
+                <div class="flex justify-center gap-4 mb-4 sm:col-span-2">
+                    <button
+                        @click="day = 'today'"
+                        :class="day === 'today' ? 'bg-blue-700 text-white' : 'bg-gray-700 text-gray-300'"
+                        class="px-6 py-3 rounded-xl font-bold shadow-lg transition flex items-center gap-2"
+                        type="button"
+                    >
+                        <i class="fa-solid fa-sun"></i> วันนี้
+                    </button>
+                    <button
+                        @click="day = 'tomorrow'"
+                        :class="day === 'tomorrow' ? 'bg-blue-700 text-white' : 'bg-gray-700 text-gray-300'"
+                        class="px-6 py-3 rounded-xl font-bold shadow-lg transition flex items-center gap-2"
+                        type="button"
+                    >
+                        <i class="fa-solid fa-calendar-day"></i> พรุ่งนี้
+                    </button>
+                </div>
+
+                <!-- ข้อมูลวันนี้ -->
+                <div x-show="day === 'today'" x-transition
+                    class="sm:col-span-2 bg-gray-900/90 rounded-xl p-6 shadow text-blue-100">
+
+                    <h2 class="text-xl font-bold mb-6 flex justify-center items-center gap-2 text-yellow-300">
+                        <i class="fa-solid fa-sun"></i> สภาพอากาศวันนี้
                     </h2>
-                    <div class="flex flex-col md:flex-row items-center justify-center gap-3 mb-2">
-                        <img src="{{ forecast.icon }}" alt="icon" class="w-8 h-8 md:w-10 md:h-10">
-                        <span class="text-base md:text-lg text-yellow-200">{{ forecast.condition }}</span>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+                        <!-- บล็อกข้อมูลเมืองและเวลา -->
+                        <div
+                            class="bg-gray-800 rounded-lg p-5 flex flex-col items-center justify-center shadow-md space-y-3 text-blue-100">
+                            <i class="fa-solid fa-location-dot text-blue-400 text-3xl"></i>
+                            <div class="text-lg font-semibold text-yellow-300">{{ weather.location }}</div>
+                            <div class="flex items-center gap-2 text-blue-300">
+                                <i class="fa-solid fa-clock text-xl"></i>
+                                <span>เวลาปัจจุบัน: <span class="font-medium">{{ weather.localtime }}</span></span>
+                            </div>
+
+                            <!-- กล่อง icon + คำอธิบายแยกอีกบล็อก -->
+                            <div
+                                class="bg-gray-900 rounded-lg p-4 w-full max-w-xs mx-auto flex flex-col items-center justify-center shadow-inner mt-4">
+                                <img src="{{ weather.icon }}" alt="weather icon" class="w-16 h-16 mb-2" />
+                                <div class="text-yellow-200 font-semibold text-center text-lg">{{ weather.condition }}</div>
+                            </div>
+                        </div>
+
+                        <!-- บล็อกอุณหภูมิ -->
+                        <div
+                            class="bg-gradient-to-r from-red-700 via-red-600 to-red-500 rounded-lg p-5 flex flex-col items-center justify-center shadow-md space-y-3 text-white">
+                            <i class="fa-solid fa-temperature-half text-4xl"></i>
+                            <div class="text-lg font-bold">อุณหภูมิ</div>
+                            <div class="text-3xl font-extrabold">{{ weather.temp_c }} °C</div>
+                            <div class="w-full h-4 rounded-full bg-red-900">
+                                <div class="h-4 rounded-full bg-gradient-to-r from-yellow-400 to-red-600"
+                                    style="width: {{ weather.temp_c|float * 2 }}%;"></div>
+                            </div>
+                        </div>
+
+                        <!-- บล็อกความชื้น -->
+                        <div
+                            class="bg-gradient-to-r from-blue-700 via-blue-600 to-blue-500 rounded-lg p-5 flex flex-col items-center justify-center shadow-md space-y-3 text-white">
+                            <i class="fa-solid fa-droplet text-4xl"></i>
+                            <div class="text-lg font-bold">ความชื้น</div>
+                            <div class="text-3xl font-extrabold">{{ weather.humidity }}%</div>
+                            <div class="w-full h-4 rounded-full bg-blue-900">
+                                <div class="h-4 rounded-full bg-gradient-to-r from-cyan-400 to-blue-700"
+                                    style="width: {{ weather.humidity|float }}%;"></div>
+                            </div>
+                        </div>
+
+                        <!-- บล็อกความเร็วลม -->
+                        <div
+                            class="bg-gradient-to-r from-green-700 via-green-600 to-green-500 rounded-lg p-5 flex flex-col items-center justify-center shadow-md space-y-3 text-white">
+                            <i class="fa-solid fa-wind text-4xl"></i>
+                            <div class="text-lg font-bold">ความเร็วลม</div>
+                            <div class="text-3xl font-extrabold">{{ weather.wind_kph }} kph</div>
+                            <div class="w-full h-4 rounded-full bg-green-900">
+                                <div class="h-4 rounded-full bg-gradient-to-r from-lime-400 to-green-600"
+                                    style="width: {{ weather.wind_kph|float if weather.wind_kph else 0 }}%;"></div>
+                            </div>
+                        </div>
+
+                        <!-- บล็อกค่าฝุ่น PM2.5 -->
+                        <div
+                            class="bg-gradient-to-r from-pink-700 via-pink-600 to-pink-500 rounded-lg p-5 flex flex-col items-center justify-center shadow-md space-y-3 text-white col-span-1 md:col-span-2">
+                            <i class="fa-solid fa-smog text-4xl"></i>
+                            <div class="text-lg font-bold">ค่าฝุ่น PM2.5</div>
+                            {% if weather.pm25 %}
+                            <div class="text-3xl font-extrabold">{{ weather.pm25 | round(2) }} µg/m³</div>
+                            <div class="w-full h-4 rounded-full bg-pink-900">
+                                <div class="h-4 rounded-full bg-gradient-to-r from-pink-400 to-pink-600"
+                                    style="width: {{ (weather.pm25|float / 500 * 100) if weather.pm25 else 0 }}%;"></div>
+                            </div>
+                            {% else %}
+                            <div class="italic text-pink-200">ไม่มีข้อมูล</div>
+                            {% endif %}
+                        </div>
+
+                        <!-- บล็อก AQI -->
+                        <div
+                            class="bg-gradient-to-r from-green-700 via-green-600 to-green-500 rounded-lg p-5 flex flex-col items-center justify-center shadow-md space-y-3 text-white col-span-1 md:col-span-2">
+                            <i class="fa-solid fa-chart-bar text-4xl"></i>
+                            <div class="text-lg font-bold">AQI</div>
+                            <div class="text-3xl font-extrabold">{{ weather.aqi_desc }}</div>
+                        </div>
+
                     </div>
-                    <div class="flex flex-col md:flex-row flex-wrap gap-4 justify-center items-center">
-                        <span class="text-blue-100">อุณหภูมิสูงสุด: <span class="font-medium text-red-200">{{ forecast.max_temp }}°C</span></span>
-                        <span class="text-blue-100">อุณหภูมิต่ำสุด: <span class="font-medium text-blue-200">{{ forecast.min_temp }}°C</span></span>
-                        <span class="text-blue-100">ความชื้นเฉลี่ย: <span class="font-medium text-blue-200">{{ forecast.avg_humidity }}%</span></span>
-                        <span class="text-blue-100">ความเร็วลมสูงสุด: <span class="font-medium text-gray-200">{{ forecast.max_wind }} kph</span></span>
+                </div>
+
+                <!-- ข้อมูลพรุ่งนี้ -->
+                {% if forecast %}
+                <div x-show="day === 'tomorrow'" x-transition
+                    class="sm:col-span-2 bg-blue-900/80 rounded-xl p-6 shadow text-center text-blue-100">
+                    <h2 class="text-xl font-bold mb-6 flex justify-center items-center gap-2">
+                        <i class="fa-solid fa-calendar-day text-yellow-300"></i> พยากรณ์วันพรุ่งนี้ ({{ forecast.date }})
+                    </h2>
+                    <div class="flex flex-col md:flex-row items-center justify-center gap-4 mb-4">
+                        <img src="{{ forecast.icon }}" alt="icon" class="w-10 h-10" />
+                        <span class="text-yellow-300 font-semibold">{{ forecast.condition }}</span>
+                    </div>
+                    <div class="flex flex-wrap justify-center gap-6 text-blue-100 text-lg">
+                        <span>อุณหภูมิสูงสุด: <span class="font-semibold text-red-300">{{ forecast.max_temp }}°C</span></span>
+                        <span>อุณหภูมิต่ำสุด: <span class="font-semibold text-blue-300">{{ forecast.min_temp }}°C</span></span>
+                        <span>ความชื้นเฉลี่ย: <span class="font-semibold text-blue-300">{{ forecast.avg_humidity }}%</span></span>
+                        <span>ความเร็วลมสูงสุด: <span class="font-semibold text-gray-300">{{ forecast.max_wind }} kph</span></span>
                         {% if forecast.chance_of_rain %}
-                        <span class="text-blue-100">โอกาสฝนตก: <span class="font-medium text-blue-200">{{ forecast.chance_of_rain }}%</span></span>
+                        <span>โอกาสฝนตก: <span class="font-semibold text-blue-300">{{ forecast.chance_of_rain }}%</span></span>
                         {% endif %}
                     </div>
                 </div>
+                {% endif %}
             </div>
             {% endif %}
         </div>
     </div>
+
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
     <script>
-const input = document.getElementById('city-input');
-const suggestions = document.getElementById('suggestions');
+        const input = document.getElementById('city-input');
+        const suggestions = document.getElementById('suggestions');
 
-input.addEventListener('input', async function() {
-    const query = input.value.trim();
-    if (query.length < 2) {
-        suggestions.innerHTML = '';
-        suggestions.classList.add('hidden');
-        return;
-    }
-    // ใช้ weatherapi.com สำหรับค้นหาเมือง
-    const res = await fetch(`https://api.weatherapi.com/v1/search.json?key=24b2faf291d14dc3a3a33107252907&q=${encodeURIComponent(query)}`);
-    const data = await res.json();
-    if (data.length > 0) {
-        suggestions.innerHTML = data.map(city =>
-            `<li class="px-4 py-2 cursor-pointer hover:bg-blue-800 text-blue-200" data-city="${city.name}">${city.name}, ${city.country}</li>`
-        ).join('');
-        suggestions.classList.remove('hidden');
-    } else {
-        suggestions.innerHTML = '';
-        suggestions.classList.add('hidden');
-    }
-});
+        input.addEventListener('input', async function () {
+            const query = input.value.trim();
+            if (query.length < 2) {
+                suggestions.innerHTML = '';
+                suggestions.classList.add('hidden');
+                return;
+            }
+            // ใช้ weatherapi.com สำหรับค้นหาเมือง
+            const res = await fetch(`https://api.weatherapi.com/v1/search.json?key=24b2faf291d14dc3a3a33107252907&q=${encodeURIComponent(query)}`);
+            const data = await res.json();
+            if (data.length > 0) {
+                suggestions.innerHTML = data.map(city =>
+                    `<li class="px-4 py-2 cursor-pointer hover:bg-blue-800 text-blue-200" data-city="${city.name}">${city.name}, ${city.country}</li>`
+                ).join('');
+                suggestions.classList.remove('hidden');
+            } else {
+                suggestions.innerHTML = '';
+                suggestions.classList.add('hidden');
+            }
+        });
 
-suggestions.addEventListener('click', function(e) {
-    if (e.target && e.target.dataset.city) {
-        input.value = e.target.dataset.city;
-        suggestions.innerHTML = '';
-        suggestions.classList.add('hidden');
-    }
-});
+        suggestions.addEventListener('click', function (e) {
+            if (e.target && e.target.dataset.city) {
+                input.value = e.target.dataset.city;
+                suggestions.innerHTML = '';
+                suggestions.classList.add('hidden');
+            }
+        });
 
-document.addEventListener('click', function(e) {
-    if (!input.contains(e.target) && !suggestions.contains(e.target)) {
-        suggestions.innerHTML = '';
-        suggestions.classList.add('hidden');
-    }
-});
-</script>
+        document.addEventListener('click', function (e) {
+            if (!input.contains(e.target) && !suggestions.contains(e.target)) {
+                suggestions.innerHTML = '';
+                suggestions.classList.add('hidden');
+            }
+        });
+    </script>
 </body>
 
 </html>
